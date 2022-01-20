@@ -1,5 +1,5 @@
 from click.testing import CliRunner
-from csvs_to_sqlite import cli
+from csvs_update_sqlite import cli
 from six import string_types, text_type
 from cogapp import Cog
 import sys

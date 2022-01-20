@@ -14,7 +14,7 @@ def get_long_description():
 
 
 setup(
-    name="csvs_to_sqlite",
+    name="csvs_update_sqlite",
     description="Convert CSV files into a SQLite database",
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
@@ -32,7 +32,7 @@ setup(
     extras_require={"test": ["pytest", "cogapp"]},
     entry_points="""
         [console_scripts]
-        csvs-to-sqlite=csvs_to_sqlite.cli:cli
+        csvs-to-sqlite=csvs_update_sqlite.cli:cli
     """,
     url="https://github.com/simonw/csvs-to-sqlite",
     classifiers=[
