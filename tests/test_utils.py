@@ -1,4 +1,4 @@
-from csvs_to_sqlite import utils
+from csvs_update_sqlite import utils
 import pytest
 import sqlite3
 import pandas as pd

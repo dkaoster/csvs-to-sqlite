@@ -1,40 +1,37 @@
-# csvs-to-sqlite
-
-[![PyPI](https://img.shields.io/pypi/v/csvs-to-sqlite.svg)](https://pypi.org/project/csvs-to-sqlite/)
-[![Changelog](https://img.shields.io/github/v/release/simonw/csvs-to-sqlite?include_prereleases&label=changelog)](https://github.com/simonw/csvs-to-sqlite/releases)
-[![Tests](https://github.com/simonw/csvs-to-sqlite/workflows/Test/badge.svg)](https://github.com/simonw/csvs-to-sqlite/actions?query=workflow%3ATest)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/simonw/csvs-to-sqlite/blob/main/LICENSE)
+# csvs-update-sqlite
 
 Convert CSV files into a SQLite database. Browse and publish that SQLite database with [Datasette](https://github.com/simonw/datasette).
 
+Based on [csvs-to-sqlite](https://github.com/simonw/csvs-to-sqlite).
+
 Basic usage:
 
-    csvs-to-sqlite myfile.csv mydatabase.db
+    csvs-update-sqlite myfile.csv mydatabase.db
 
 This will create a new SQLite database called `mydatabase.db` containing a
 single table, `myfile`, containing the CSV content.
 
 You can provide multiple CSV files:
 
-    csvs-to-sqlite one.csv two.csv bundle.db
+    csvs-update-sqlite one.csv two.csv bundle.db
 
 The `bundle.db` database will contain two tables, `one` and `two`.
 
 This means you can use wildcards:
 
-    csvs-to-sqlite ~/Downloads/*.csv my-downloads.db
+    csvs-update-sqlite ~/Downloads/*.csv my-downloads.db
 
 If you pass a path to one or more directories, the script will recursively
 search those directories for CSV files and create tables for each one.
 
-    csvs-to-sqlite ~/path/to/directory all-my-csvs.db
+    csvs-update-sqlite ~/path/to/directory all-my-csvs.db
 
 ## Handling TSV (tab-separated values)
 
 You can use the `-s` option to specify a different delimiter. If you want
 to use a tab character you'll need to apply shell escaping like so:
 
-    csvs-to-sqlite my-file.tsv my-file.db -s $'\t'
+    csvs-update-sqlite my-file.tsv my-file.db -s $'\t'
 
 ## Refactoring columns into separate lookup tables
 
@@ -50,7 +47,7 @@ Let's say you have a CSV file that looks like this:
 You can now convert selected columns into separate lookup tables using the new
 `--extract-column` option (shortname: `-c`) - for example:
 
-    csvs-to-sqlite openelections-data-*/*.csv \
+    csvs-update-sqlite openelections-data-*/*.csv \
         -c county:County:name \
         -c precinct:Precinct:name \
         -c office -c district -c party -c candidate \
@@ -97,27 +94,23 @@ They will be populated with IDs that reference the new derived tables.
 
 ## Installation
 
-    $ pip install csvs-to-sqlite
+    $ pip install csvs-update-sqlite
 
-`csvs-to-sqlite` now requires Python 3. If you are running Python 2 you can install the last version to support Python 2:
-
-    $ pip install csvs-to-sqlite==0.9.2
-
-## csvs-to-sqlite --help
+## csvs-update-sqlite --help
 
 <!-- [[[cog
 import cog
-from csvs_to_sqlite import cli
+from csvs_update_sqlite import cli
 from click.testing import CliRunner
 runner = CliRunner()
 result = runner.invoke(cli.cli, ["--help"])
-help = result.output.replace("Usage: cli", "Usage: csvs-to-sqlite")
+help = result.output.replace("Usage: cli", "Usage: csvs-update-sqlite")
 cog.out(
     "```\n{}\n```".format(help)
 )
 ]]] -->
 ```
-Usage: csvs-to-sqlite [OPTIONS] PATHS... DBNAME
+Usage: csvs-update-sqlite [OPTIONS] PATHS... DBNAME
 
   PATHS: paths to individual .csv files or to directories containing .csvs
 
