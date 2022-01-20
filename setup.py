@@ -18,7 +18,7 @@ setup(
     description="Convert CSV files into a SQLite database",
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
-    author="Simon Willison",
+    author="Daniel Kao",
     version=VERSION,
     license="Apache License, Version 2.0",
     packages=find_packages(),
@@ -32,9 +32,9 @@ setup(
     extras_require={"test": ["pytest", "cogapp"]},
     entry_points="""
         [console_scripts]
-        csvs-to-sqlite=csvs_update_sqlite.cli:cli
+        csvs-update-sqlite=csvs_update_sqlite.cli:cli
     """,
-    url="https://github.com/simonw/csvs-to-sqlite",
+    url="https://github.com/dkaoster/csvs-update-sqlite",
     classifiers=[
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
