@@ -286,8 +286,7 @@ def table_outdated(conn, path):
 
 
 def update_csvs_meta(conn, path):
-    if not table_exists(conn, "[.csvs-meta]"):
-        conn.execute("CREATE TABLE [.csvs-meta] (csv_path, last_modified)")
+    conn.execute("CREATE TABLE IF NOT EXISTS [.csvs-meta] (csv_path TEXT PRIMARY KEY, last_modified INTEGER)")
 
     csv_modified = csv_last_modified(path)
     conn.execute(
