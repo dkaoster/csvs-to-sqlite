@@ -303,10 +303,16 @@ def cli(
 
     conn.close()
 
-    if db_existed:
+    if db_existed and not update_tables:
         click.echo(
             "Added {} CSV file{} to {}".format(
                 len(csvs), "" if len(csvs) == 1 else "s", dbname
+            )
+        )
+    elif db_existed and update_tables:
+        click.echo(
+            "Updated {} CSV file{} in {}".format(
+                len(dataframes), "" if len(dataframes) == 1 else "s", dbname
             )
         )
     else:
