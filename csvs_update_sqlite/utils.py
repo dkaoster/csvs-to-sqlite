@@ -273,7 +273,7 @@ def csv_last_modified(path):
 def table_outdated(conn, path):
     csv_modified = csv_last_modified(path)
 
-    if table_exists(conn, "[.csvs-meta]"):
+    if table_exists(conn, ".csvs-meta"):
         csv_meta_entry = conn.execute(
             """
             select * from [.csvs-meta]
