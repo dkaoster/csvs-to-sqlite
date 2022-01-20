@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 import io
 import os
 
-VERSION = "1.1"
+VERSION = "1.3"
 
 
 def get_long_description():
@@ -24,12 +24,12 @@ setup(
     packages=find_packages(),
     install_requires=[
         "click~=7.0",
-        "dateparser~=0.7.1",
-        "pandas~=0.25.0",
+        "dateparser>=1.0",
+        "pandas>=1.0",
         "py-lru-cache~=0.1.4",
         "six",
     ],
-    tests_require=["pytest~=5.0.0"],
+    extras_require={"test": ["pytest", "cogapp"]},
     entry_points="""
         [console_scripts]
         csvs-to-sqlite=csvs_to_sqlite.cli:cli
@@ -42,5 +42,8 @@ setup(
         "Topic :: Database",
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
     ],
 )
