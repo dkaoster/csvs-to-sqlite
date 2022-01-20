@@ -281,7 +281,7 @@ def table_outdated(conn, path):
         """, [path]).fetchone()
         if csv_meta_entry is None:
             return True
-        return csv_modified != csv_meta_entry['last_modified']
+        return csv_modified != csv_meta_entry[1]
     return True
 
 
