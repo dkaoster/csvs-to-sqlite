@@ -1,5 +1,6 @@
 import dateparser
 import os
+import stat
 import fnmatch
 import hashlib
 import lru
@@ -262,6 +263,39 @@ def table_exists(conn, table):
     """,
         [table],
     ).fetchone()[0]
+
+
+def csv_last_modified(path):
+    file_stats = os.stat(path)
+    return file_stats[stat.ST_MTIME]
+
+
+def table_outdated(conn, path):
+    csv_modified = csv_last_modified(path)
+
+    if table_exists(conn, "[.csvs-meta]"):
+        csv_meta_entry = conn.execute(
+            """
+            select * from [.csvs-meta]
+            where csv_path=?
+        """, [path]).fetchone()
+        if csv_meta_entry is None:
+            return True
+        return csv_modified != csv_meta_entry['last_modified']
+    return True
+
+
+def update_csvs_meta(conn, path):
+    if not table_exists(conn, "[.csvs-meta]"):
+        conn.execute("CREATE TABLE [.csvs-meta] (csv_path, last_modified)")
+
+    csv_modified = csv_last_modified(path)
+    conn.execute(
+        """
+        INSERT INTO [.csvs-meta] values (?, ?)
+        ON CONFLICT(csv_path)
+        DO UPDATE SET last_modified=excluded.last_modified;
+    """, [path, csv_modified])
 
 
 def drop_table(conn, table):
