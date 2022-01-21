@@ -291,7 +291,7 @@ def update_csvs_meta(conn, path):
     csv_modified = csv_last_modified(path)
     conn.execute(
         """
-        INSERT INTO [.csvs-meta](csv_path, last_modified) VALUES (?, ?)
+        INSERT INTO [.csvs-meta](csv_path, last_modified) VALUES (?, ?) WHERE true
         ON CONFLICT(csv_path) DO UPDATE SET last_modified=excluded.last_modified;
     """, [path, csv_modified])
 
