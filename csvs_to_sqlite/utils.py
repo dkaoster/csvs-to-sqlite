@@ -268,7 +268,7 @@ def table_exists(conn, table):
 def csv_md5_checksum(path):
     with open(path, "rb") as f:
         file_hash = hashlib.md5()
-        while chunk := f.read(8192):
+        for chunk in iter(lambda: f.read(8192), b''):
             file_hash.update(chunk)
     return file_hash.hexdigest()
 
