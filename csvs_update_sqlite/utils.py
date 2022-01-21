@@ -288,7 +288,7 @@ def table_outdated(conn, path):
 def add_csvs_meta(conn, csvs):
     conn.execute("CREATE TABLE IF NOT EXISTS [.csvs-meta] (csv_path TEXT PRIMARY KEY, last_modified INTEGER)")
 
-    csvs_list = map(lambda name, path: (path, csv_last_modified(path)), csvs.items())
+    csvs_list = map(lambda csv: (csv[1], csv_last_modified(csv[1])), csvs.items())
     conn.executemany("INSERT INTO [.csvs-meta] VALUES (?, ?);", csvs_list)
 
 
