@@ -285,11 +285,15 @@ def table_outdated(conn, path):
     return True
 
 
-def add_csvs_meta(conn, csvs):
+def update_csvs_meta(conn, path):
     conn.execute("CREATE TABLE IF NOT EXISTS [.csvs-meta] (csv_path TEXT PRIMARY KEY, last_modified INTEGER)")
 
-    csvs_list = map(lambda csv: (csv[1], csv_last_modified(csv[1])), csvs.items())
-    conn.executemany("INSERT INTO [.csvs-meta] VALUES (?, ?);", csvs_list)
+    csv_modified = csv_last_modified(path)
+    conn.execute(
+        """
+        INSERT INTO [.csvs-meta] VALUES (?, ?)
+        ON CONFLICT(csv_path) DO UPDATE SET last_modified=excluded.last_modified;
+    """, [path, csv_modified])
 
 
 def drop_table(conn, table):
