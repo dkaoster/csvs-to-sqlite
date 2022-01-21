@@ -15,7 +15,7 @@ from .utils import (
     refactor_dataframes,
     table_exists,
     table_outdated,
-    add_csvs_meta,
+    update_csv_meta,
     drop_table,
     to_sql_with_foreign_keys,
 )
@@ -237,6 +237,9 @@ def cli(
                 sql_type_overrides = apply_shape(df, shape)
                 apply_dates_and_datetimes(df, date, datetime, datetime_format)
                 dataframes.append(df)
+
+                if update_tables:
+                    update_csv_meta(conn, path)
         except LoadCsvError as e:
             click.echo("Could not load {}: {}".format(path, e), err=True)
 
@@ -297,10 +300,6 @@ def cli(
                     )
 
         generate_and_populate_fts(conn, created_tables.keys(), fts, foreign_keys)
-
-    if update_tables:
-        drop_table(conn, ".csvs-meta")
-        add_csvs_meta(conn, csvs)
 
     conn.close()
 
