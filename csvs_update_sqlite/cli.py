@@ -279,9 +279,6 @@ def cli(
         if index:
             for index_defn in index:
                 add_index(conn, df.table_name, index_defn)
-        if update_tables:
-            for name, path in csvs.items():
-                update_csvs_meta(conn, path)
 
     # Create FTS tables
     if fts:
@@ -300,6 +297,10 @@ def cli(
                     )
 
         generate_and_populate_fts(conn, created_tables.keys(), fts, foreign_keys)
+
+    if update_tables:
+        for name, path in csvs.items():
+            update_csvs_meta(conn, path)
 
     conn.close()
 
