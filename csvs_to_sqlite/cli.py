@@ -15,7 +15,7 @@ from .utils import (
     refactor_dataframes,
     table_exists,
     table_outdated,
-    update_csvs_meta,
+    add_csvs_meta,
     drop_table,
     to_sql_with_foreign_keys,
 )
@@ -299,8 +299,8 @@ def cli(
         generate_and_populate_fts(conn, created_tables.keys(), fts, foreign_keys)
 
     if update_tables:
-        for name, path in csvs.items():
-            update_csvs_meta(conn, path)
+        drop_table(conn, ".csvs-meta")
+        add_csvs_meta(conn, csvs)
 
     conn.close()
 
