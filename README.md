@@ -135,10 +135,10 @@ Options:
 
   --replace-tables                Replace tables if they already exist
   --update-tables                 Manages an extra table .csvs-meta that keeps
-                                  track of each CSV file and when it was last
-                                  updated. On subsequent runs, the CSVs will be
-                                  compared against the last updated date to see
-                                  what has updated, and only those specific
+                                  track of each CSV file and the checksum of the
+                                  file. On subsequent runs, the CSVs will be
+                                  compared against the checksum in the table to
+                                  see what has updated, and only those specific
                                   tables will be replaced.
 
   -t, --table TEXT                Table to use (instead of using CSV filename)
