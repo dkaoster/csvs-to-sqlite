@@ -107,7 +107,7 @@ import re
     "--fts-regex",
     "-fr",
     multiple=False,
-    help=("Like --fts, but use regex to find column name(s)"),
+    help=("Like --fts, but use case-insensitive regex to find column name(s)"),
 )
 @click.option(
     "--index",
