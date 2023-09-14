@@ -21,6 +21,7 @@ from .utils import (
 )
 import os
 import sqlite3
+import re
 
 
 @click.command()
@@ -103,6 +104,12 @@ import sqlite3
     help=("One or more columns to use to populate a full-text index"),
 )
 @click.option(
+    "--fts-regex",
+    "-fr",
+    multiple=False,
+    help=("Like --fts, but use regex to find column name(s)"),
+)
+@click.option(
     "--index",
     "-i",
     multiple=True,
@@ -175,6 +182,7 @@ def cli(
     datetime_format,
     primary_key,
     fts,
+    fts_regex,
     index,
     shape,
     filename_column,
@@ -284,23 +292,30 @@ def cli(
                 add_index(conn, df.table_name, index_defn)
 
     # Create FTS tables
-    if fts:
+    if fts or fts_regex:
+        # if fts_regex: click.echo(fts_regex)
         fts_version = best_fts_version()
         if not fts_version:
             conn.close()
             raise click.BadParameter(
                 "Your SQLite version does not support any variant of FTS"
-            )
+            ) 
         # Check that columns make sense
         for table, df in created_tables.items():
-            for fts_column in fts:
-                if fts_column not in df.columns:
-                    raise click.BadParameter(
-                        'FTS column "{}" does not exist'.format(fts_column)
-                    )
-
-        generate_and_populate_fts(conn, created_tables.keys(), fts, foreign_keys)
-
+            if fts_regex:
+                for col in df:
+                    if re.match(fts_regex, col, re.IGNORECASE):
+                        fts = (*fts,col) if fts else col
+            
+            if fts:
+                for fts_column in fts:
+                    if fts_column not in df.columns:
+                        raise click.BadParameter(
+                            'FTS column "{}" does not exist'.format(fts_column)
+                        )
+            
+            generate_and_populate_fts(conn, created_tables.keys(), fts, foreign_keys)
+        
     conn.close()
 
     if db_existed and not update_tables:
