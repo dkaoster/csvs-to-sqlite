@@ -304,8 +304,6 @@ def cli(
         for table, df in created_tables.items():
             if fts_regex:
                 for col in df:
-                    print(fts_regex) 
-                    print(col)
                     if re.match(fts_regex, col, re.IGNORECASE):
                         fts = (*fts,col,) if fts else (col,)
             if fts:
