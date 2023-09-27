@@ -293,13 +293,12 @@ def cli(
 
     # Create FTS tables
     if fts or fts_regex:
-        # if fts_regex: click.echo(fts_regex)
         fts_version = best_fts_version()
         if not fts_version:
             conn.close()
             raise click.BadParameter(
                 "Your SQLite version does not support any variant of FTS"
-            ) 
+            )
         # Check that columns make sense
         for table, df in created_tables.items():
             if fts_regex:
